@@ -14,7 +14,7 @@ esac
 
 platformLinux=""
 
-architecture="x86"
+architecture=$(uname -m)
 arch=""
 
 if [[ "$platform" == "linux" ]]

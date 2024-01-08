@@ -119,31 +119,43 @@ void jpc_tsfb_destroy(jpc_tsfb_t *tsfb)
 	free(tsfb);
 }
 
-int jpc_tsfb_analyze2(jpc_tsfb_t *tsfb, int *a, int xstart, int ystart,
-  int width, int height, int stride, int numlvls)
-{
-       if (width > 0 && height > 0) {
-               if ((*tsfb->qmfb->analyze)(a, xstart, ystart, width, height, stride))
-                       return -1;
-               if (numlvls > 0) {
-                       if (jpc_tsfb_analyze2(tsfb, a, JPC_CEILDIVPOW2(xstart,
-                         1), JPC_CEILDIVPOW2(ystart, 1), JPC_CEILDIVPOW2(
-                         xstart + width, 1) - JPC_CEILDIVPOW2(xstart, 1),
-                         JPC_CEILDIVPOW2(ystart + height, 1) -
-                         JPC_CEILDIVPOW2(ystart, 1), stride, numlvls - 1)) {
-                               return -1;
-                       }
-               }
-       }
-       return 0;
-}
-
 int jpc_tsfb_analyze(jpc_tsfb_t *tsfb, jas_seq2d_t *a)
 {
 #ifndef _IOS
 	return (tsfb->numlvls > 0) ? jpc_tsfb_analyze2(tsfb, jas_seq2d_getref(a,
 	  jas_seq2d_xstart(a), jas_seq2d_ystart(a)), jas_seq2d_xstart(a),
 	  jas_seq2d_ystart(a), jas_seq2d_width(a),
+	  jas_seq2d_height(a), jas_seq2d_rowstep(a), tsfb->numlvls - 1) : 0;
+#else
+    return 0;
+#endif
+}
+
+int jpc_tsfb_analyze2(jpc_tsfb_t *tsfb, int *a, int xstart, int ystart,
+  int width, int height, int stride, int numlvls)
+{
+	if (width > 0 && height > 0) {
+		if ((*tsfb->qmfb->analyze)(a, xstart, ystart, width, height, stride))
+			return -1;
+		if (numlvls > 0) {
+			if (jpc_tsfb_analyze2(tsfb, a, JPC_CEILDIVPOW2(xstart,
+			  1), JPC_CEILDIVPOW2(ystart, 1), JPC_CEILDIVPOW2(
+			  xstart + width, 1) - JPC_CEILDIVPOW2(xstart, 1),
+			  JPC_CEILDIVPOW2(ystart + height, 1) -
+			  JPC_CEILDIVPOW2(ystart, 1), stride, numlvls - 1)) {
+				return -1;
+			}
+		}
+	}
+	return 0;
+}
+
+int jpc_tsfb_synthesize(jpc_tsfb_t *tsfb, jas_seq2d_t *a)
+{
+#ifndef _IOS
+	return (tsfb->numlvls > 0) ? jpc_tsfb_synthesize2(tsfb,
+	  jas_seq2d_getref(a, jas_seq2d_xstart(a), jas_seq2d_ystart(a)),
+	  jas_seq2d_xstart(a), jas_seq2d_ystart(a), jas_seq2d_width(a),
 	  jas_seq2d_height(a), jas_seq2d_rowstep(a), tsfb->numlvls - 1) : 0;
 #else
     return 0;
@@ -168,18 +180,6 @@ int jpc_tsfb_synthesize2(jpc_tsfb_t *tsfb, int *a, int xstart, int ystart,
 		}
 	}
 	return 0;
-}
-
-int jpc_tsfb_synthesize(jpc_tsfb_t *tsfb, jas_seq2d_t *a)
-{
-#ifndef _IOS
-        return (tsfb->numlvls > 0) ? jpc_tsfb_synthesize2(tsfb,
-          jas_seq2d_getref(a, jas_seq2d_xstart(a), jas_seq2d_ystart(a)),
-          jas_seq2d_xstart(a), jas_seq2d_ystart(a), jas_seq2d_width(a),
-          jas_seq2d_height(a), jas_seq2d_rowstep(a), tsfb->numlvls - 1) : 0;
-#else
-    return 0;
-#endif
 }
 
 int jpc_tsfb_getbands(jpc_tsfb_t *tsfb, uint_fast32_t xstart,

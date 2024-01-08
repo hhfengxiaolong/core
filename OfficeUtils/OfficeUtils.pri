@@ -1,6 +1,5 @@
 core_linux {
     QMAKE_CXXFLAGS += -Wall -Wno-ignored-qualifiers
-    DEFINES += HAVE_UNISTD_H
 }
 core_mac {
     QMAKE_CXXFLAGS += -Wall -Wno-ignored-qualifiers

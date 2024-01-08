@@ -35,8 +35,7 @@
 #include FT_SFNT_NAMES_H
 #include "fontdictionaryworker.h"
 #include "../common/ByteBuilder.h"
-#include <iostream>
-#include <stdio.h>
+
 #ifndef min
 #define min(a,b)            (((a) < (b)) ? (a) : (b))
 #endif
@@ -1433,10 +1432,8 @@ bool CFontList::CheckLoadFromFolderBin(const std::wstring& strDirectory)
 	std::wstring strPath = strDirectory + L"/font_selection.bin";
 
 	NSFile::CFileBinary oFile;
-	if (!oFile.OpenFile(strPath)) {
-                std::cout << "Cannot find font_selection.bin" << std::endl;
+	if (!oFile.OpenFile(strPath))
 		return false;
-        }
 
 	DWORD dwLen1 = (DWORD)oFile.GetFileSize();
 	DWORD dwLen2 = 0;
@@ -1451,7 +1448,6 @@ bool CFontList::CheckLoadFromFolderBin(const std::wstring& strDirectory)
     for (int nIndex = 0; nIndex < lCount; ++nIndex)
 	{
         NSFonts::CFontInfo *pFontInfo = NSFonts::FromBuffer(_pBuffer, strDirectory);
-          std::cout << "Found font" << std::endl;
 		Add(pFontInfo);
 	}
 
@@ -1462,7 +1458,6 @@ bool CFontList::CheckLoadFromFolderBin(const std::wstring& strDirectory)
 
 	RELEASEARRAYOBJECTS(pBuffer);
 
-        std::cout << "Found fonts in font_selection.bin" << std::endl;
 	return true;
 }
 
@@ -1541,7 +1536,6 @@ void CApplicationFonts::Initialize(bool bIsCheckSelection)
 #ifdef __ANDROID__
     m_oList.LoadFromFolder(L"/system/fonts");
 #endif
-	m_oList.LoadFromFolder(L"/working/fonts");
 
 	m_oCache.m_pApplicationFontStreams = &m_oStreams;
 }

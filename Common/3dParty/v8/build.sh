@@ -13,12 +13,12 @@ case "$os" in
   *)        exit ;;
 esac
 
-architecture="x86"
+architecture=$(uname -m)
 arch=""
 
 case "$architecture" in
   x86_64*)  arch="_64" ;;
-  *)        arch="_64" ;;
+  *)        arch="_32" ;;
 esac
 
 cd "$SCRIPTPATH/v8"

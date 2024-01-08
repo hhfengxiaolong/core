@@ -308,6 +308,49 @@ namespace NExtractTools
    //doct_bin -> pdf
 	_UINT32 doct_bin2pdf(NSDoctRenderer::DoctRendererFormat::FormatFile eFromType, const std::wstring &sFrom, const std::wstring &sTo, const std::wstring &sTemp, bool bPaid, const std::wstring &sThemeDir, InputParams& params)
    {
+<<<<<<< HEAD
+=======
+       _UINT32 nRes = 0;
+       NSDoctRenderer::DoctRendererFormat::FormatFile eToType = NSDoctRenderer::DoctRendererFormat::FormatFile::PDF;
+       std::wstring sTFileDir = NSDirectory::GetFolderPath(sFrom);
+       std::wstring sImagesDirectory = sTFileDir + FILE_SEPARATOR_STR + _T("media");
+       std::wstring sPdfBinFile = sTFileDir + FILE_SEPARATOR_STR + _T("pdf.bin");
+	   NSDoctRenderer::CDoctrenderer oDoctRenderer(NULL != params.m_sAllFontsPath ? *params.m_sAllFontsPath : _T(""));
+       std::wstring sXml = getDoctXml(eFromType, eToType, sTFileDir, sPdfBinFile, sImagesDirectory, sThemeDir, -1, _T(""), params);
+       std::wstring sResult;
+       bool bRes = oDoctRenderer.Execute(sXml, sResult);
+       if (-1 != sResult.find(_T("error")))
+       {
+           std::wcerr << _T("DoctRenderer:") << sResult << std::endl;
+           nRes = AVS_FILEUTILS_ERROR_CONVERT;
+       }
+       else
+       {
+           NSFonts::IApplicationFonts* pApplicationFonts = NSFonts::NSApplication::Create();
+           initApplicationFonts(pApplicationFonts, params);
+          
+		   CPdfRenderer pdfWriter(pApplicationFonts, params.getIsPDFA());
+           
+			pdfWriter.SetTempFolder(sTemp);
+			pdfWriter.SetThemesPlace(sThemeDir);
+			
+			std::wstring documentID = params.getDocumentID();
+			if (false == documentID.empty())
+				pdfWriter.SetDocumentID(documentID);
+
+			std::wstring password = params.getSavePassword();
+			if (false == password.empty())
+				pdfWriter.SetPassword(password);
+          
+		   int nReg = (bPaid == false) ? 0 : 1;
+           nRes = (S_OK == pdfWriter.OnlineWordToPdfFromBinary(sPdfBinFile, sTo)) ? nRes : AVS_FILEUTILS_ERROR_CONVERT;
+           RELEASEOBJECT(pApplicationFonts);
+       }
+       //удаляем sPdfBinFile, потому что он не в Temp
+       if (NSFile::CFileBinary::Exists(sPdfBinFile))
+           NSFile::CFileBinary::Remove(sPdfBinFile);
+       return nRes;
+>>>>>>> parent of e8d4971 (commit)
    }
 
 	//doct_bin -> image
@@ -1689,7 +1732,7 @@ namespace NExtractTools
 		}
 
 		//clean up v8
-		// NSDoctRenderer::CDocBuilder::Dispose();
+		NSDoctRenderer::CDocBuilder::Dispose();
 		if (SUCCEEDED_X2T(result) && oInputParams.m_bOutputConvertCorrupted)
 		{
 			return AVS_FILEUTILS_ERROR_CONVERT_CORRUPTED;

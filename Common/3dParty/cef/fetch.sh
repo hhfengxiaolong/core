@@ -10,7 +10,7 @@ case "$os" in
   *)        exit ;;
 esac
 
-architecture="x86"
+architecture=$(uname -m)
 arch=""
 
 case "$architecture" in

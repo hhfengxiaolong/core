@@ -54,8 +54,6 @@
 
 #include <string.h>
 #include "Directory.h"
-#include <iostream>
-#include <string>
 
 namespace NSDirectory
 {
@@ -132,18 +130,8 @@ namespace NSDirectory
         {
             while ((dirp = readdir(dp)) != NULL)
             {
-
-                std::string fname(dirp->d_name);
-                std::string frels(".rels");
-
-                std::cout << "readdir: " << dirp->d_name << " type: " << std::to_string(dirp->d_type) << std::endl;
                 int nType = 0;
-                if (fname.compare(frels) == 0) {
-                   // This is a HACK to workaround webassembly considering .rels 
-                   // and maybe all files starting with dot as a directory
-                   std::cout << "workaround .rels";
-                   nType = 2;
-                } else if(DT_REG == dirp->d_type)
+                if(DT_REG == dirp->d_type)
                     nType = 2;
                 else if (DT_DIR == dirp->d_type)
                     nType = 1;

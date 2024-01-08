@@ -42,7 +42,7 @@ endif
 #   call this the "target", but not Autotools.
 HOSTX := $(shell $(CXX) $(CXXFLAGS) -dumpmachine 2>/dev/null | cut -f 1 -d '-')
 ifeq ($(HOSTX),)
-  HOSTX := "x86"
+  HOSTX := $(shell uname -m 2>/dev/null)
 endif
 
 IS_X86 := $(shell echo "$(HOSTX)" | $(GREP) -v "64" | $(GREP) -i -c -E 'i.86|x86|i86')
