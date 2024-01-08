@@ -10,6 +10,9 @@ BUILD_NUMBER = $$(BUILD_NUMBER)
 }
 
 DEFINES += INTVER=$$VERSION
+DEFINES += __linux__
+DEFINES += HAVE_UNISTD_H
+DEFINES += _WASM
 
 PUBLISHER_NAME = $$(PUBLISHER_NAME)
 isEmpty(PUBLISHER_NAME){
@@ -65,8 +68,8 @@ win32:!contains(QMAKE_TARGET.arch, x86_64): {
 linux-g++ {
     CONFIG += core_linux
 linux-g++:contains(QMAKE_HOST.arch, x86_64): {
-    message("linux-64")
-    CONFIG += core_linux_64
+    message("linux-32")
+    CONFIG += core_linux_32
 }
 linux-g++:!contains(QMAKE_HOST.arch, x86_64): {
     message("linux-32")
@@ -80,9 +83,9 @@ linux-g++:contains(DST_ARCH, arm): {
 }
 
 linux-g++-64 {
-    message("linux-64")
+    message("linux-32")
     CONFIG += core_linux
-    CONFIG += core_linux_64
+    CONFIG += core_linux_32
 }
 linux-g++-32 {
     message("linux-32")
@@ -131,7 +134,7 @@ core_linux_32 {
     CORE_BUILDS_PLATFORM_PREFIX = linux_32
 }
 core_linux_64 {
-    CORE_BUILDS_PLATFORM_PREFIX = linux_64
+    CORE_BUILDS_PLATFORM_PREFIX = linux_32
 }
 core_mac_64 {
     CORE_BUILDS_PLATFORM_PREFIX = mac_64

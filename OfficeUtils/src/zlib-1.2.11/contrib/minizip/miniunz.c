@@ -136,6 +136,9 @@ int mymkdir(const char*  dirname)
 }
 
 #else
+#if defined(_WASM)
+#include <sys/stat.h>
+#endif
 int mymkdir(dirname)
     const char* dirname;
 {

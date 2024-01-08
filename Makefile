@@ -5,7 +5,7 @@ PACKAGE_NAME := $(PRODUCT_NAME)
 
 PUBLISHER_NAME ?= Ascensio System SIA
 
-UNAME_M := $(shell uname -m)
+UNAME_M := "x86_32"
 ifeq ($(UNAME_M),x86_64)
 	ARCHITECTURE := 64
 	ARCH_SUFFIX := x64
@@ -323,7 +323,7 @@ $(VIDEOPLAYERLIB): $(VIDEOPLAYERLIB_DEP)
 	PUBLISHER_NAME="$(PUBLISHER_NAME)" \
 	PRODUCT_VERSION=$(PRODUCT_VERSION) \
 	BUILD_NUMBER=$(BUILD_NUMBER) \
-	qmake -r $<
+	qmake -spec linux-g++-32 -r $<
 
 $(ARCHIVE) : 
 	$(AR) $@ $(ARTIFACTS)
@@ -346,3 +346,6 @@ deploy: $(ARCHIVE)
 		s3://repo-doc-onlyoffice-com/$(ARCH_REPO_DIR)/$(PACKAGE_NAME)/$(GIT_BRANCH)/$(PACKAGE_VERSION)/$(ARCH_SUFFIX)/  \
 		s3://repo-doc-onlyoffice-com/$(ARCH_REPO_DIR)/$(PACKAGE_NAME)/$(GIT_BRANCH)/latest/$(ARCH_SUFFIX)/ \
 		--acl public-read --delete
+x2t: $(X2T)
+x2t: $(X2T)
+x2t: $(X2T)
