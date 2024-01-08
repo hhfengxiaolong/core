@@ -1,0 +1,5 @@
+<?xml version="1.0" encoding="utf-8"?><TaskQueueDataConvert xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance" xmlns:xsd="http://www.w3.org/2001/XMLSchema">
+<m_sFileFrom>/working/cryptpad.bin</m_sFileFrom>
+<m_sFileTo>/working/cryptpad.bin.xlsx</m_sFileTo>
+<m_bIsNoBase64>false</m_bIsNoBase64>
+</TaskQueueDataConvert>

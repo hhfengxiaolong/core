@@ -1,4 +1,4 @@
-ICU_MAJOR_VER = 58
+ICU_MAJOR_VER = 
 
 core_windows {
     message($$PWD/$$CORE_BUILDS_PLATFORM_PREFIX/icu/include)
@@ -14,10 +14,10 @@ core_win_32 {
 }
 
 core_linux {
-    INCLUDEPATH += $$PWD/$$CORE_BUILDS_PLATFORM_PREFIX/usr/local/include
+#    INCLUDEPATH += $$PWD/$$CORE_BUILDS_PLATFORM_PREFIX/usr/local/include
 
-    LIBS        += $$PWD/$$CORE_BUILDS_PLATFORM_PREFIX/build/libicuuc.so.$$ICU_MAJOR_VER
-    LIBS        += $$PWD/$$CORE_BUILDS_PLATFORM_PREFIX/build/libicudata.so.$$ICU_MAJOR_VER
+#    LIBS        += $$PWD/$$CORE_BUILDS_PLATFORM_PREFIX/build/libicuuc.a
+#    LIBS        += $$PWD/$$CORE_BUILDS_PLATFORM_PREFIX/build/libicudata.a
 }
 
 core_mac {
@@ -26,3 +26,8 @@ core_mac {
     LIBS        += $$PWD/$$CORE_BUILDS_PLATFORM_PREFIX/build/libicuuc.$${ICU_MAJOR_VER}.dylib
     LIBS        += $$PWD/$$CORE_BUILDS_PLATFORM_PREFIX/build/libicudata.$${ICU_MAJOR_VER}.dylib
 }
+
+# icu wasm port flags
+QMAKE_CFLAGS += -s USE_ICU=1
+QMAKE_CXXFLAGS += -s USE_ICU=1
+QMAKE_LFLAGS += -s USE_ICU=1
