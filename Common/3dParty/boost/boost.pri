@@ -2,10 +2,6 @@ INCLUDEPATH += $$PWD/boost_1_58_0
 
 MSVC = vc140
 
-QMAKE_CFLAGS+=-s USE_BOOST_HEADERS=1
-QMAKE_CXXFLAGS+=-s USE_BOOST_HEADERS=1
-QMAKE_LCFLAGS+=-s USE_BOOST_HEADERS=1
-
 CORE_BOOST_LIBS = $$PWD/boost_1_58_0/build/$$CORE_BUILDS_PLATFORM_PREFIX/static
 
 core_boost_fpic {
@@ -40,7 +36,7 @@ core_release {
     LIBS += -L$$CORE_BOOST_LIBS -llibboost_regex-$$MSVC-mt-1_58
 }
 } else {
-    LIBS += -L$$CORE_BOOST_LIBS
+    LIBS += -L$$CORE_BOOST_LIBS -lboost_regex
 }
 
 }

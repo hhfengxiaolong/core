@@ -33,7 +33,7 @@
 #include "../DesktopEditor/common/Directory.h"
 
 #include "PdfRenderer.h"
-#include <iostream>
+
 #include "Src/Document.h"
 #include "Src/Pages.h"
 #include "Src/Image.h"
@@ -1014,7 +1014,6 @@ HRESULT CPdfRenderer::CommandDrawTextCHAR(const LONG& lUnicode, const double& dX
 }
 HRESULT CPdfRenderer::CommandDrawText(const std::wstring& wsUnicodeText, const double& dX, const double& dY, const double& dW, const double& dH)
 {
-        std::wcout << "In CommandDrawText" << wsUnicodeText.c_str() <<  std::endl;
 	if (!IsPageValid() || !wsUnicodeText.size())
 		return S_FALSE;
 
@@ -1024,7 +1023,6 @@ HRESULT CPdfRenderer::CommandDrawText(const std::wstring& wsUnicodeText, const d
 		return S_FALSE;
 
 	// Специальный случай для текста из Djvu, нам не нужно, чтобы он рисовался
-        std::wcout << "Font " << m_oFont.GetName() << std::endl;
 	if (L"" == m_oFont.GetPath() && L"DjvuEmptyFont" == m_oFont.GetName())
 	{
 		if (m_bNeedUpdateTextFont)
@@ -1062,7 +1060,6 @@ HRESULT CPdfRenderer::CommandDrawText(const std::wstring& wsUnicodeText, const d
 		return S_OK;
 	}
 
-        std::cout << "Final drawText" <<  std::endl;
 	bool bRes = DrawText(pUnicodes, unLen, dX, dY, NULL);
 	delete[] pUnicodes;
 
@@ -1638,10 +1635,9 @@ bool CPdfRenderer::DrawText(unsigned int* pUnicodes, unsigned int unLen, const d
 	if (m_bNeedUpdateTextFont)
 		UpdateFont();
 
-	if (!m_pFont) {
-                std::cout << "DrawText No Font" << std::endl;
+	if (!m_pFont)
 		return false;
-        }
+
 	unsigned char* pCodes = m_pFont->EncodeString(pUnicodes, unLen, pGids);
 
 	CTransform& t = m_oTransform;
@@ -1674,12 +1670,10 @@ void CPdfRenderer::UpdateFont()
 {
 	m_bNeedUpdateTextFont = false;
     std::wstring wsFontPath = m_oFont.GetPath();
-   std::wcout << "In UpdateFont " << wsFontPath << std::endl;
 	LONG lFaceIndex = m_oFont.GetFaceIndex();
 	if (L"" == wsFontPath)
 	{
         std::wstring wsFontName = m_oFont.GetName();
-   std::wcout << "In UpdateFont " << wsFontName << std::endl;
 		bool bBold   = m_oFont.IsBold();
 		bool bItalic = m_oFont.IsItalic();
 		bool bFind = false;
@@ -1717,7 +1711,6 @@ void CPdfRenderer::UpdateFont()
 	if (L"" != wsFontPath)
 	{
 		// TODO: Пока мы здесь предполагаем, что шрифты только либо TrueType, либо OpenType
-              std::wcout << "Loading font " << wsFontPath << std::endl;
 		m_pFontManager->LoadFontFromFile(wsFontPath, lFaceIndex, 10, 72, 72);
 		std::wstring wsFontType = m_pFontManager->GetFontType();
 		if (L"TrueType" == wsFontType || L"OpenType" == wsFontType || L"CFF" == wsFontType)

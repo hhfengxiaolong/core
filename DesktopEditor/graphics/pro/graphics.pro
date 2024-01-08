@@ -314,7 +314,6 @@ SOURCES += $$LIB_GRAPHICS_PRI_PATH/Qt_build/graphics/project/libpsd_pri2.c
 SOURCES += $$LIB_GRAPHICS_PRI_PATH/Qt_build/graphics/project/libpsd_pri3.c
 
 !build_cximage_zlib_disable {
- withzlib {
 SOURCES += \
     $$LIB_GRAPHICS_PRI_PATH/cximage/zlib/crc32.c \
     $$LIB_GRAPHICS_PRI_PATH/cximage/zlib/adler32.c \
@@ -326,7 +325,6 @@ SOURCES += \
     $$LIB_GRAPHICS_PRI_PATH/cximage/zlib/zutil.c \
     $$LIB_GRAPHICS_PRI_PATH/cximage/zlib/uncompr.c \
     $$LIB_GRAPHICS_PRI_PATH/cximage/zlib/compress.c \
-  }
 }
 
 SOURCES += \

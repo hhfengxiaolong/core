@@ -41,6 +41,18 @@ core_windows {
     LIBS += -lRpcrt4
     LIBS += -lShell32
 }
+core_linux {
+    CONFIG += use_external_download
+
+    use_external_download {
+        DEFINES += USE_EXTERNAL_DOWNLOAD
+    } else {
+        include(../Common/3dParty/curl/curl.pri)
+    }
+
+    SOURCES += \
+        ./FileDownloader/FileDownloader_curl.cpp
+}
 core_mac {
     OBJECTIVE_SOURCES += \
         ./FileDownloader/FileDownloader_mac.mm
